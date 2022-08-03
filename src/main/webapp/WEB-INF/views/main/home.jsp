@@ -52,6 +52,8 @@
 			})
 		})
 	</script>
+	<!-- user.getId() 자동으로 호출 -->
+	${user.id}
 </div>
 
 

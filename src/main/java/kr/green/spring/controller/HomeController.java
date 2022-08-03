@@ -47,9 +47,6 @@ import kr.green.spring.vo.MemberVO;
 	    mv.addObject("name", "홍길동");
 	    mv.addObject("age", 20);
 	    System.out.println("취미는 " + hobby + "이고, " + time + "시간씩 합니다");
-	    MemberVO member = new MemberVO();
-	    member.setId("admin");
-	    mv.addObject("user", member);
 	    return mv;
 		}
 		
