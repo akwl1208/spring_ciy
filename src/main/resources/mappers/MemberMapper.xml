@@ -15,4 +15,8 @@
   <select id="selectMember2" resultType="kr.green.spring.vo.MemberVO">
     select * from member where me_id = #{me_id}
   </select>
+  <!-- 객체에서 아이디 비번 가져올 때 -->
+  <select id="selectMember3" resultType="kr.green.spring.vo.MemberVO">
+    select * from member where me_id = #{member.me_id} and me_pw = #{member.me_pw}
+  </select>
 </mapper>

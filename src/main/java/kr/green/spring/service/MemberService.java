@@ -12,4 +12,6 @@ public interface MemberService {
 
 	MemberVO getMember(MemberVO member);
 
+	MemberVO getMember2(MemberVO member);
+
 }

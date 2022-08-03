@@ -96,6 +96,10 @@ import kr.green.spring.vo.MemberVO;
   		MemberVO dbMember3 = memberService.getMember(member);
   		System.out.println("================dbMember3");
   		System.out.println(dbMember3);
+  		//선생님 풀이2 : Memberdao에서 MemberMapper에 member 객체를 넘겨줌
+  		MemberVO dbMember4 = memberService.getMember2(member);
+  		System.out.println("================dbMember4");
+  		System.out.println(dbMember4);
   		return mv;
 		}
 }
