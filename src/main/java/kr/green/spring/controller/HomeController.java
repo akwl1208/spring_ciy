@@ -1,5 +1,7 @@
 package kr.green.spring.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,8 +78,24 @@ import kr.green.spring.vo.MemberVO;
 		public ModelAndView loginPost(ModelAndView mv, MemberVO member){
 	    mv.setViewName("redirect:/login");
 	    System.out.println(member);
+	    //아이디가 주어지면 이메일을 가져오는 작업
 	    String email = memberService.getEmail(member.getMe_id());
+	    System.out.println("================email");
 	    System.out.println("이메일 : " + email);
-	    return mv;
+	    //아이디가 주어지면 회원 정보를 가져오는 작업
+	    MemberVO dbMember = memberService.getMember(member.getMe_id());
+	    System.out.println("================dbMember");
+	    System.out.println(dbMember);
+  		//아이디와 비번이 주어지면 아이디와 비번이 일치하는 회원의 정보를 가져오는 작업
+  		MemberVO dbMember2 = memberService.getMember(member.getMe_id(),member.getMe_pw());
+  		if(dbMember2.getMe_id().equals(member.getMe_id()) && dbMember2.getMe_pw().equals(member.getMe_pw())){
+  			System.out.println("================dbMember2");
+  			System.out.println(dbMember2);
+  		}
+  		//선생님 풀이 : 매개변수로 그냥 member를 통째로 보내버림
+  		MemberVO dbMember3 = memberService.getMember(member);
+  		System.out.println("================dbMember3");
+  		System.out.println(dbMember3);
+  		return mv;
 		}
 }

@@ -11,8 +11,7 @@ public class MemberVO {
 	private String me_id;
 	private String me_pw;
 	private char me_gender;
-	private Date me_birth;
+	private Date me_birthday;
 	private String me_email;
 	private int me_authority;
-	
 }
