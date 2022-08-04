@@ -6,12 +6,9 @@ import kr.green.spring.vo.MemberVO;
 
 public interface MemberDAO {
 
-	String selectEmail(@Param("me_id")String me_id);
-	
 	MemberVO selectMember(@Param("me_id")String me_id);
-	//dao는 오버로딩 안됨
-	MemberVO selectMember2(@Param("me_id")String me_id, @Param("me_pw")String me_pw);
-	
-	MemberVO selectMember3(@Param("member")MemberVO member);
+
+	void insertMember(@Param("m")MemberVO member);
+
 
 }
