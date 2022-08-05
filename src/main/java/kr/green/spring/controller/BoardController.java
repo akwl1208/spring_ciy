@@ -1,5 +1,7 @@
 package kr.green.spring.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,10 @@ public class BoardController {
 	
 	@RequestMapping(value="/board/list",method=RequestMethod.GET)
 	public ModelAndView boardlistGet(ModelAndView mv){
+		//등록된 게시글 가져옴(여러개)
+		ArrayList<BoardVO> list = boardService.getBoardList();
+		System.out.println(list);
+		mv.addObject("list", list);
     mv.setViewName("/board/list");
     return mv;
 	}
