@@ -22,6 +22,9 @@
 		        		<a class="nav-link" href="<%=request.getContextPath()%>/logout">로그아웃</a>
 		      		</li>
 	    		</c:if>
+	    		<li class="nav-item">
+	        		<a class="nav-link" href="<%=request.getContextPath()%>/board/list">게시글</a>
+	      		</li>
 	    	</ul>
 		</div>
     	<c:if test="${user != null}">
