@@ -11,4 +11,8 @@ public interface BoardService {
 
 	ArrayList<BoardVO> getBoardList();
 
+	void updateView(Integer bd_num);
+
+	BoardVO getBoard(Integer bd_num);
+
 }

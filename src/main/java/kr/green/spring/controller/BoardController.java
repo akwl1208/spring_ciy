@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,7 +27,7 @@ public class BoardController {
 	public ModelAndView boardlistGet(ModelAndView mv){
 		//등록된 게시글 가져옴(여러개)
 		ArrayList<BoardVO> list = boardService.getBoardList();
-		System.out.println(list);
+		//System.out.println(list);
 		mv.addObject("list", list);
     mv.setViewName("/board/list");
     return mv;
@@ -42,12 +43,26 @@ public class BoardController {
 	public ModelAndView boardInsertPost(ModelAndView mv, BoardVO board,
 			HttpSession session){
 		//화면에서 전송한 데이터가 잘 도착했는지 확인
-		System.out.println(board);
+		//System.out.println(board);
 		//로그인한 회원 정보 확인
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		//System.out.println(user);
 		boardService.insertBoard(board, user);
     mv.setViewName("redirect:/board/list");
+    return mv;
+	}
+	
+	@RequestMapping(value="/board/select/{bd_num}",method=RequestMethod.GET)
+	public ModelAndView boardSelectGet(ModelAndView mv,
+			@PathVariable("bd_num")Integer bd_num){
+		//게시글 번호에 맞는 게시글 조회수 증가
+		boardService.updateView(bd_num);
+		//게시글 번호에 맞는 게시글 정보 가져오기
+		BoardVO board = boardService.getBoard(bd_num);
+		//가져온 게시글을 화면에 전달
+		mv.addObject("board", board);
+		
+    mv.setViewName("/board/select");
     return mv;
 	}
 }
