@@ -11,10 +11,10 @@
 		<form method="post" class="mt-5">
 			<h1>게시글 등록</h1>
 			<div class="form-group">
-			  <input type="text" class="form-control" name="" placeholder="제목">
+			  <input type="text" class="form-control" name="bd_title" placeholder="제목">
 			</div>
 			<div class="form-group">
-			  <textarea class="form-control" rows="10" name="" placeholder="내용"></textarea>
+			  <textarea class="form-control" rows="10" name="bd_content" placeholder="내용"></textarea>
 			</div>
 			<button class="btn btn-outline-primary col-12 mb-3">게시글 등록</button>
 		</form>
