@@ -28,7 +28,7 @@ public class BoardController {
 	@RequestMapping(value="/board/list",method=RequestMethod.GET)
 	public ModelAndView boardlistGet(ModelAndView mv, Criteria cri){
 		cri.setPerPageNum(2);
-		int totalCount = boardService.getTotalCount();
+		int totalCount = boardService.getTotalCount(cri);
 		//등록된 게시글 가져옴(여러개)
 		ArrayList<BoardVO> list = boardService.getBoardList(cri);
 		PageMaker pm = new PageMaker(cri, 5, totalCount);

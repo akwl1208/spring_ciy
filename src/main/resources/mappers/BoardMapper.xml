@@ -11,7 +11,16 @@
 	
 	<!-- 게시글 리스트 정보 가져옴 -->
 	<select id="selectBoardList" resultType="kr.green.spring.vo.BoardVO">
-		select * from board where bd_del = 'N' order by bd_num desc limit #{cri.pageStart},#{cri.perPageNum}
+		select * from board
+			where bd_del = 'N'
+			<if test="cri.searchType == 'all'">
+			and (bd_title like concat('%',#{cri.search},'%') or bd_me_id like concat('%',#{cri.search},'%'))
+			</if> 
+			<if test="cri.searchType != 'all'">
+			and ${cri.searchType} like concat('%',#{cri.search},'%')
+			</if>
+			order by bd_num desc 
+			limit #{cri.pageStart}, #{cri.perPageNum}
 	</select>
 	
 	<!-- 게시글을 선택하면 해당글 조회수 증가 -->
@@ -40,8 +49,15 @@
 			where bd_num = #{bd_num}	
 	</update>
 	
-	<!-- 게시글 개수 -->
+	<!-- 게시글 개수 가져옴 -->
 	<select id="selectTotalCount" resultType="int">
-		select count(*) from board where bd_del = 'N'
+		select count(*) from board
+			where bd_del = 'N'
+			<if test="cri.searchType == 'all'">
+			and (bd_title like concat('%',#{cri.search},'%') or bd_me_id like concat('%',#{cri.search},'%'))
+			</if> 
+			<if test="cri.searchType != 'all'">
+			and ${cri.searchType} like concat('%',#{cri.search},'%')
+			</if>
 	</select>
 </mapper>
