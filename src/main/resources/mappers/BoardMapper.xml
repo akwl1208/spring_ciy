@@ -60,4 +60,29 @@
 			and ${cri.searchType} like concat('%',#{cri.search},'%')
 			</if>
 	</select>
+	
+	<!-- 회원이 게시글에 추천/비추천 상태 가져옴 -->
+	<select id="selectLikes" resultType="kr.green.spring.vo.LikesVO">
+		select * from likes
+			where li_me_id = #{li.li_me_id} and li_bd_num = #{li.li_bd_num}
+	</select>
+	
+	<!-- 회원이 게시글에 처음으로 추천/비추천 눌렀을 때, 상태 정보 추가 -->
+	<insert id="insertLikes">
+		insert into likes(li_bd_num, li_me_id, li_state)
+			values(#{li.li_bd_num},#{li.li_me_id},#{li.li_state})
+	</insert>
+	
+	<!-- 회원이 게시글의 추천/비추천 상태를 바꿀 때 -->
+	<update id="updateLikes">
+		update likes set li_state = #{li.li_state} where li_num = #{li.li_num}
+	</update>
+	
+	<!-- 게시글의 추천/비추천 정보 수정 -->
+	<update id="updateBoardLikes">
+		update board 
+			set bd_up = (select count(*) from likes where li_bd_num = #{bd_num} and li_state = 1),
+		    	bd_down = (select count(*) from likes where li_bd_num = #{bd_num} and li_state = -1)
+		  where bd_num = #{bd_num}
+	</update>
 </mapper>

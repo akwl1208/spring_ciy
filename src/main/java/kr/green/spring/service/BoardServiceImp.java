@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kr.green.spring.dao.BoardDAO;
 import kr.green.spring.pagination.Criteria;
 import kr.green.spring.vo.BoardVO;
+import kr.green.spring.vo.LikesVO;
 import kr.green.spring.vo.MemberVO;
 
 @Service
@@ -108,5 +109,36 @@ public class BoardServiceImp implements BoardService {
 			if(cri == null)
 				return 0;
 			return boardDao.selectTotalCount(cri);
+		}
+
+		@Override
+		public String UpdateLikes(LikesVO likes) {
+			if(likes == null)
+				return "";
+			//조회 => 로그인한 사용자가 해당 게시물에 한 추천/비추천 정보를 가져옴
+			LikesVO dbLikes= boardDao.selectLikes(likes);
+			try {
+				//처음 추천/비추천을 눌렀으면 insert
+				if(dbLikes == null) {
+					boardDao.insertLikes(likes);
+					return ""+likes.getLi_state();
+				//이전에 한 적이 있으면 update
+				}else {
+					//이전 추천/비추천 상태와 현재 추천/비추천 상태가 다른 경우 -> ex)추천했다가 비추천 누른 경우
+					if(dbLikes.getLi_state() != likes.getLi_state()) {
+						dbLikes.setLi_state(likes.getLi_state());
+					}
+					//이전 추천/비추천 상태가 현재와 같은 경우 -> ex)추천인데 추천을 누른 경우 -> state = 0
+					else {
+						dbLikes.setLi_state(0);
+					}
+					boardDao.updateLikes(dbLikes);
+					return likes.getLi_state()+(dbLikes.getLi_state() == 0 ? "0" : ""); //-10, 10 
+				}
+			}catch(Exception e) {}
+			finally {
+				boardDao.updateBoardLikes(likes.getLi_bd_num());
+			}
+			return "";
 		}
 }
