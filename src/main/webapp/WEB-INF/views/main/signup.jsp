@@ -17,13 +17,14 @@
 </head>
 <body>
 	<!-- input 태그의 name에 들어갈 값은 vo의 변수명과 같게 한다 -->
-	<div class="container">
+	<div class="container mt-5">
 		<form action="<%=request.getContextPath()%>/signup" method="post">
 			<h1 class="text-center">회원가입</h1>
 			<div class="form-group">
 			  <label for="me_id">아이디:</label>
 			  <input type="text" class="form-control" name="me_id" id="me_id">
 			</div>
+			<button type="button" class="btn btn-outline-primary col-12" id="idCheck">아이디 중복 확인</button>
 			<div class="form-group">
 			  <label for="me_pw">비밀번호:</label>
 			  <input type="password" class="form-control" name="me_pw" id="me_pw">
@@ -119,6 +120,13 @@
 		            me_birth: {
 		            	required : "필수항목입니다"
 		            }
+		        },
+		        submitHandler : function(form){
+							if(!idCheck){
+								alert('아이디 중복 검사하세요');
+								return false;
+							}
+							return true;
 		        }
 		    });
 		})
@@ -130,7 +138,51 @@
 		    },
 		    "Please check your input."
 		);
-	
+		
+		$(function(){
+			$('#idCheck').click(function(){
+				let id = $('[name=me_id]').val();
+				
+				if(id.trim().length == 0){
+					alert('아이디를 입력하세요')
+					return;
+				}
+					
+				let obj = {
+					me_id : id
+				}
+				
+				$.ajax({
+			        async:false,
+			        type:'POST',
+			        data: JSON.stringify(obj),
+			        url: '<%=request.getContextPath()%>/id/check',
+			        dataType:"json", 
+			        contentType:"application/json; charset=UTF-8",
+			        success : function(data){
+						if(data){
+							alert('가입 가능한 아이디입니다');
+							idCheck = true;
+						}else{
+							alert('이미 사용중이거나 탈퇴한 아이디입니다');
+						}
+			        }
+				});
+			})
+			//중복검사를 다시하게 만드는 코드
+			$('[name=me_id]').change(function(){
+				idCheck = false;
+			})
+			/*
+			$('form').submit(function(){
+				if(!idCheck){
+					alert('아이디 중복 검사하세요');
+					return false;
+				}
+			})
+			*/
+		})
+		let idCheck = false;
 	</script>
 </body>
 </html>

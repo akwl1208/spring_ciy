@@ -126,4 +126,11 @@ import kr.green.spring.vo.MemberVO;
 				map.put("name", "홍길동");
 		    return map;
 		}
+		
+		//아이디 중복 검사
+		@RequestMapping(value ="/id/check")
+		@ResponseBody
+		public boolean idCheck(@RequestBody MemberVO member){
+		    return memberService.checkId(member);
+		}
 }
