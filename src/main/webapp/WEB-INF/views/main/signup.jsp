@@ -160,12 +160,12 @@
 			        dataType:"json", 
 			        contentType:"application/json; charset=UTF-8",
 			        success : function(data){
-						if(data){
-							alert('가입 가능한 아이디입니다');
-							idCheck = true;
-						}else{
-							alert('이미 사용중이거나 탈퇴한 아이디입니다');
-						}
+								if(data){
+									alert('가입 가능한 아이디입니다');
+									idCheck = true;
+								}else{
+									alert('이미 사용중이거나 탈퇴한 아이디입니다');
+								}
 			        }
 				});
 			})
