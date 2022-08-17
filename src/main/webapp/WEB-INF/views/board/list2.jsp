@@ -13,12 +13,12 @@
 	<div class="form-group">
 	  <form class="input-group">
 	  	<select class="input-group-prepend form-control col-2" name="searchType">
-		    <option value="all" <c:if test="${pm.cri.searchType == 'all'}">selected</c:if>>전체</option>
-		    <option value="bd_title" <c:if test="${pm.cri.searchType == 'bd_title'}">selected</c:if>>제목</option>
-		    <option value="bd_me_id" <c:if test="${pm.cri.searchType == 'bd_me_id'}">selected</c:if>>작성자</option>
+		    <option value="all">전체</option>
+		    <option value="bd_title">제목</option>
+		    <option value="bd_me_id">작성자</option>
 	  	</select>
 	    <input type="text" class="form-control col-8" name="search" value="${pm.cri.search}">
-	    <button class="btn btn-outline-primary col-2">검색</button>
+	    <button class="btn btn-outline-primary col-2 btn-search" type="button">검색</button>
 	  </form>
 	</div>
 	<table class="table table-striped table-hover">
@@ -39,9 +39,16 @@
 </div>
 <script>
 	$(function(){
-		getBoardList({
-			page : 1,
-			perPageNum : 2
+		getBoardList({page : 1})
+		$('.btn-search').click(function(){
+			let search = $('[name=search]').val();
+			let searchType = $('[name=searchType]').val();
+			let cri = {
+				search : search,
+				searchType : searchType,
+				page : 1
+			}
+			getBoardList(cri);
 		})
 	})
 	
