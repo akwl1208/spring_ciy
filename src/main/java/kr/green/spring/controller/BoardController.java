@@ -19,6 +19,7 @@ import kr.green.spring.pagination.Criteria;
 import kr.green.spring.pagination.PageMaker;
 import kr.green.spring.service.BoardService;
 import kr.green.spring.vo.BoardVO;
+import kr.green.spring.vo.CommentVO;
 import kr.green.spring.vo.LikesVO;
 import kr.green.spring.vo.MemberVO;
 
@@ -126,7 +127,6 @@ public class BoardController {
 	//AJAX를 이용한 게시글
 	@RequestMapping(value="/board/list2",method=RequestMethod.GET)
 	public ModelAndView boardlist2Get(ModelAndView mv, Criteria cri){
-	
     mv.setViewName("/board/list2");
     return mv;
 	}
@@ -142,5 +142,31 @@ public class BoardController {
 		map.put("list", list);
 		map.put("pm", pm);
     return map;
+	}
+	
+	//댓글 입력
+	@RequestMapping(value="/ajax/comment/insert",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<Object, Object> ajaxCommentInsert(@RequestBody CommentVO comment, HttpSession session){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		String res = boardService.insertComment(comment, user);
+		map.put("res", res);
+		return map;
+	}
+	//댓글 리스트
+	@RequestMapping(value="/ajax/comment/list/{co_bd_num}",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<Object, Object> ajaxCommentList(@RequestBody Criteria cri
+			, @PathVariable("co_bd_num")int co_bd_num){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		ArrayList<CommentVO> list = boardService.getCommentList(co_bd_num, cri);
+		
+		int totalCount = boardService.getTotalCountComment(co_bd_num);
+		PageMaker pm = new PageMaker(cri, 5, totalCount);
+		
+		map.put("pm", pm);
+		map.put("list",list);
+		return map;
 	}
 }

@@ -85,4 +85,23 @@
 		    	bd_down = (select count(*) from likes where li_bd_num = #{bd_num} and li_state = -1)
 		  where bd_num = #{bd_num}
 	</update>
+	
+	<!-- 댓글 추가 -->
+	<insert id="insertComment">
+		insert into comments(co_me_id, co_bd_num, co_content, co_ori_num, co_depth)
+			select #{co.co_me_id},#{co.co_bd_num},#{co.co_content},ifnull(max(co_num),0) + 1, 1 from comments
+	</insert>
+	
+	<!-- 댓글 리스트 가져오기 -->
+	<select id="selectCommentList" resultType="kr.green.spring.vo.CommentVO">
+		select * from comments
+			where co_bd_num = #{co_bd_num}
+			order by co_num desc
+			limit #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<!-- 게시글의 댓글 개수 가져오기 -->
+	<select id="selectTotalCountComment" resultType="int">
+		select count(*) from comments where co_bd_num = #{co_bd_num}
+	</select>
 </mapper>
