@@ -32,23 +32,9 @@
 	        <th>추천</th>
 	      </tr>
 	    </thead>
-	    <tbody>
-   	  	
-	    </tbody>
+	    <tbody></tbody>
 	</table>
-	<ul class="pagination justify-content-center">
-	  <c:if test="${pm.prev}">
-	  	<li class="page-item"><a class="page-link" href="<c:url value="/board/list?page=${pm.startPage-1}&searchType=${pm.cri.searchType}&search=${pm.cri.search}"></c:url>">이전</a></li>
-	  </c:if>	
-	  <c:forEach begin="${pm.startPage}" end="${pm.endPage}" var="i">
-	  	<li class="page-item <c:if test="${i == pm.cri.page}">active</c:if>">
-	  		<a class="page-link" href="<c:url value="/board/list?page=${i}&searchType=${pm.cri.searchType}&search=${pm.cri.search}"></c:url>">${i}</a>
-	  	</li>
-	  </c:forEach>
- 	  <c:if test="${pm.next}">
-	  	<li class="page-item"><a class="page-link" href="<c:url value="/board/list?page=${pm.endPage+1}&searchType=${pm.cri.searchType}&search=${pm.cri.search}"></c:url>">다음</a></li>
-	  </c:if>
-	</ul>
+	<ul class="pagination justify-content-center"></ul>
 	<a href="<%=request.getContextPath()%>/board/insert" class="btn btn-outline-warning mb-3">글쓰기</a> 
 </div>
 <script>
@@ -83,6 +69,29 @@
 		      `</tr>`;
 	    	}
 	    	$('tbody').html(str);
+	    	//페이지 네이션
+	    	let pm = data.pm;
+	    	let pmStr = '';
+				if(pm.prev){
+					pmStr +=
+					'<li class="page-item">'+
+						'<a class="page-link" href="javascript:0;" onclick="getBoardList({page : '+ (pm.startPage-1) +'})">이전</a>'+
+					'</li>';
+				}
+				for(let i = pm.startPage; i<=pm.endPage; i++){
+					let active = pm.cri.page == i ? 'active' : '';
+					pmStr +=
+					'<li class="page-item '+ active + '">'+
+	  	  		'<a class="page-link" href="javascript:0;" onclick="getBoardList({page : '+ i +'})">' + i + '</a>'+
+	  	  	'</li>';	
+				}	    			
+				if(pm.next){
+					pmStr +=
+					'<li class="page-item">'+
+						'<a class="page-link" href="javascript:0;" onclick="getBoardList({page : '+ (pm.endPage+1) +'})">다음</a>'+
+					'</li>';
+				}
+				$('.pagination').html(pmStr);
 	    }
 		});
 	}
