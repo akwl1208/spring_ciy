@@ -172,6 +172,10 @@ public class BoardServiceImp implements BoardService {
 			if(board == null || board.getBd_del() !='N')
 				return "잘못된 게시글입니다. 댓글을 작성할 수 없습니다";
 			
+			//답글인 경우 순서를 업데이트
+			if(comment.getCo_ori_num() != 0)
+				boardDao.updateCommentOrder(comment);
+			
 			comment.setCo_me_id(user.getMe_id());
 			boardDao.insertComment(comment);
 			
