@@ -98,7 +98,7 @@
 				});
 			})
 		})
-		//댓글
+		//댓글 등록
 		$(function(){
 			$('.btn-comment-insert').click(function(){
 				let co_content = $('[name=co_content]').val();
@@ -122,7 +122,7 @@
 				});
 			})
 		})
-	
+		//댓글 삭제
 		$(function(){
 			$(document).on('click','.btn-comment-delete',function () {
 				let co_num = $(this).siblings('[name=co_num]').val();
@@ -147,7 +147,58 @@
 				})
 			})
 		})
-		
+		//댓글 수정
+		$(function(){
+			$(document).on('click','.btn-comment-update',function(){
+				$('.btn-comment-update-cancel').click();
+				//기존 댓글 내용이 입력창으로 바뀜
+				let co_content = $(this).siblings('.co_content').text();
+				let str ='<textarea class="co_content2">'+co_content+'</textarea>';
+				$(this).siblings('.co_content').after(str);
+				$(this).siblings('.co_content').hide();
+				$(this).hide();
+				$(this).siblings('.btn-comment-delete').hide();
+				
+				str = '<button class="btn-comment-update-complete">수정완료</button>';
+				str += '<button class="btn-comment-update-cancel">수정취소</button>';
+				$(this).parent().append(str);
+			})
+			//수정완료 버튼 클릭
+			$(document).on('click','.btn-comment-update-complete',function(){
+				let co_num = $(this).siblings('[name=co_num]').val();
+				let co_content = $(this).siblings('.co_content2').val();
+				let obj={
+					co_num,
+					co_content
+				};
+				console.log(obj)
+				$.ajax({
+			    async: true,
+			    type:'POST',
+			    data: JSON.stringify(obj),
+			    url: '<%=request.getContextPath()%>/ajax/comment/update',
+			    dataType:"json", 
+			    contentType:"application/json; charset=UTF-8",
+			    success : function(data){
+			    	if(data.res){
+			    		alert("댓글이 수정되었습니다")
+			    		getCommentList(criteria, bd_num);
+			    	}else{
+			    		alert("수정에 실패했습니다")
+			    	}
+			    }
+				})
+			})
+			//수정취소 버튼 클릭
+			$(document).on('click','.btn-comment-update-cancel',function(){
+				$(this).siblings('.co_content').show();
+				$(this).siblings('.co_content2').remove();
+				$(this).siblings('.btn-comment-update').show();
+				$(this).siblings('.btn-comment-delete').show();
+				$('.btn-comment-update-cancel').remove();
+				$('.btn-comment-update-complete').remove();
+			})
+		})
 		function getCommentList(cri,bd_num){
 			$.ajax({
 		    async: true,
@@ -167,7 +218,8 @@
 							'<input value="'+co.co_num+'" name="co_num" type="hidden">';
 							if(co.co_me_id == '${user.me_id}'){
 								str +=
-								'<button class="btn-comment-delete">삭제</button>';
+								'<button class="btn-comment-delete">삭제</button>'+
+								'<button class="btn-comment-update">수정</button>'
 							}
 						str +=	
 						'</div>'
