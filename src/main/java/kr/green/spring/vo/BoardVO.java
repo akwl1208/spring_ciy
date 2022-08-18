@@ -3,8 +3,6 @@ package kr.green.spring.vo;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Data;
 
 @Data
@@ -21,6 +19,7 @@ public class BoardVO {
 	private int bd_depth;
 	private int bd_views;
 	private char bd_del;
+	private int bd_order; //같은 ori_num을 가진 게시글들의 순서
 	
 	public String getBd_reg_date_str() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
