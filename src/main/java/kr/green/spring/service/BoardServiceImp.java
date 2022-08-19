@@ -134,7 +134,16 @@ public class BoardServiceImp implements BoardService {
 				del = 'A';
 			
 			boardDao.deleteBoard(bd_num, del);
-	
+			
+			//첨부파일 가져오기
+			ArrayList<FileVO> fileList = boardDao.selectFileList(bd_num);
+			if(fileList == null || fileList.size() == 0)
+				return;
+			//서버에서 삭제 후, DB에서 삭제 처리
+			for(FileVO file : fileList) {
+				UploadFileUtils.deleteFile(uploadPath, file.getFi_name());
+				boardDao.deleteFile(file.getFi_num());
+			}
 		}
 
 		@Override

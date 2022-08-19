@@ -162,4 +162,8 @@
 		select * from file where fi_bd_num = #{bd_num}
 	</select>
 	
+	<!-- 첨부파일 삭제 -->
+	<delete id="deleteFile">
+		delete from file where fi_num = #{fi_num}
+	</delete>
 </mapper>
