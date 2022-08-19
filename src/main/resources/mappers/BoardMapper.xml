@@ -157,7 +157,7 @@
 			values(#{fi.fi_name},#{fi.fi_ori_name},#{fi.fi_bd_num})
 	</insert>
 	
-	<!-- 첨부파일 가져오기 -->
+	<!-- 게시글에 있는 첨부파일들 가져오기 -->
 	<select id="selectFileList" resultType="kr.green.spring.vo.FileVO">
 		select * from file where fi_bd_num = #{bd_num}
 	</select>
@@ -166,4 +166,9 @@
 	<delete id="deleteFile">
 		delete from file where fi_num = #{fi_num}
 	</delete>
+	
+	<!-- 첨부파일 가져오기 -->
+	<select id="selectFile" resultType="kr.green.spring.vo.FileVO">
+		select * from file where fi_num = #{fi_num}
+	</select>
 </mapper>
