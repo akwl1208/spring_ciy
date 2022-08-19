@@ -6,12 +6,20 @@
   <!-- id는 memberDao의 메소드명으로 -->
   <!-- resultType : "java.lang.String" 원래 이렇게 써줘야하는데 java.lang은 생략가능
   		-> 다른 경우 패키지명도 앞에 써줘야한다. ex)kr.green.spring. -->
+  <!-- 회원정보 가져오기 -->
   <select id="selectMember" resultType="kr.green.spring.vo.MemberVO">
     select * from member where me_id = #{me_id}
   </select>
+  
+  <!-- 회원가입 -->
   <insert id="insertMember">
   	insert into member(me_id, me_pw, me_email, me_birth, me_gender, me_authority)
   	values(#{m.me_id},#{m.me_pw},#{m.me_email},#{m.me_birth},#{m.me_gender},1)
   </insert>
-
+	
+	<!-- 아이디 찾기 -->
+	<select id="selectIdList" resultType="String">
+		select me_id from member
+			where me_birth= #{m.me_birth_str} and me_email = #{m.me_email} 
+	</select>
 </mapper>

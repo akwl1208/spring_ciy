@@ -139,4 +139,22 @@ import kr.green.spring.vo.MemberVO;
 		public boolean idCheck(@RequestBody MemberVO member){
 		    return memberService.checkId(member);
 		}
+		
+		//아이디 찾기
+		@RequestMapping(value= "/find", method=RequestMethod.GET)
+		public ModelAndView findGet(ModelAndView mv, String type){
+			mv.addObject("type", type);
+			mv.setViewName("/main/find");
+	    return mv;
+		}
+		
+		@RequestMapping(value ="/find/id")
+		@ResponseBody
+		public Map<Object, Object> findId(@RequestBody MemberVO member){
+			HashMap<Object, Object> map = new HashMap<Object, Object>();
+			ArrayList<String> idList = memberService.getIdList(member);
+			
+			map.put("idList", idList);
+			return map;
+		}
 }
