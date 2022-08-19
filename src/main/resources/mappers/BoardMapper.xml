@@ -156,4 +156,10 @@
 		insert into file(fi_name, fi_ori_name, fi_bd_num)
 			values(#{fi.fi_name},#{fi.fi_ori_name},#{fi.fi_bd_num})
 	</insert>
+	
+	<!-- 첨부파일 가져오기 -->
+	<select id="selectFileList" resultType="kr.green.spring.vo.FileVO">
+		select * from file where fi_bd_num = #{bd_num}
+	</select>
+	
 </mapper>

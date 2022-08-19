@@ -31,6 +31,15 @@
 			<div class="form-group">
 			  <textarea class="form-control" rows="10" name="bd_content" readonly>${board.bd_content}</textarea>
 			</div>
+			<div class="form-group">
+				<label>첨부파일</label>
+				<c:if test="${fileList.size() == 0}">없음</c:if>
+				<c:if test="${fileList.size() != 0}">
+					<c:forEach items="${fileList}" var="file">
+						<a href="<c:url value="/file${file.fi_name}"></c:url>" class="form-control" download="${file.fi_ori_name}">${file.fi_ori_name}</a>
+					</c:forEach>
+				</c:if>
+			</div>
 			<c:if test="${user != null && user.me_id == board.bd_me_id}">
 				<a href="<%=request.getContextPath()%>/board/update/${board.bd_num}" class="btn btn-outline-danger">수정</a>
 				<a href="<%=request.getContextPath()%>/board/delete/${board.bd_num}" class="btn btn-outline-danger">삭제</a>

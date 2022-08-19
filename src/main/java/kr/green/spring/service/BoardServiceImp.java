@@ -251,4 +251,11 @@ public class BoardServiceImp implements BoardService {
 			boardDao.updateComment(comment);
 			return true;
 		}
+
+		@Override
+		public ArrayList<FileVO> getFileList(Integer bd_num) {
+			if(bd_num == null)
+				return null;
+			return boardDao.selectFileList(bd_num);
+		}
 }
