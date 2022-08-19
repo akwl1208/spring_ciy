@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.spring.pagination.Criteria;
@@ -53,10 +54,10 @@ public class BoardController {
 	
 	@RequestMapping(value="/board/insert",method=RequestMethod.POST)
 	public ModelAndView boardInsertPost(ModelAndView mv, BoardVO board,
-			HttpSession session){
+			HttpSession session, MultipartFile [] files){
 		//로그인한 회원 정보 확인
 		MemberVO user = (MemberVO)session.getAttribute("user");
-		boardService.insertBoard(board, user);
+		boardService.insertBoard(board, user, files);
     mv.setViewName("redirect:/board/list");
     return mv;
 	}
