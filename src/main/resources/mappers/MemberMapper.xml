@@ -22,4 +22,21 @@
 		select me_id from member
 			where me_birth= #{m.me_birth_str} and me_email = #{m.me_email} 
 	</select>
+	
+	<!-- 이메일과 생일로 회원정보 찾기 -->
+	<select id="selectMemberByEmailBirth" resultType="kr.green.spring.vo.MemberVO">
+		select * from member
+			where me_birth= #{m.me_birth_str} and me_email = #{m.me_email} 
+	</select>
+	
+	<!-- 회원 비밀번호 수정 -->
+	<update id="updateMember">
+		update member 
+			set me_pw = #{m.me_pw},
+					me_gender = #{m.me_gender},
+					me_birth = #{m.me_birth},
+					me_email = #{m.me_email},
+					me_authority = #{m.me_authority}
+			where me_id = #{m.me_id}
+	</update>
 </mapper>

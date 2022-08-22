@@ -157,4 +157,21 @@ import kr.green.spring.vo.MemberVO;
 			map.put("idList", idList);
 			return map;
 		}
+		//비번 찾기
+		@RequestMapping(value ="/find/pw")
+		@ResponseBody
+		public Map<Object, Object> findPw(@RequestBody MemberVO member){
+			HashMap<Object, Object> map = new HashMap<Object, Object>();
+			//memberService.sendEmail("제목", "내용", "pageup64@naver.com");
+			boolean res = false; 
+			boolean exception = false;
+			try {
+				res =	memberService.findPw(member);
+			} catch (Exception e) {
+				exception = true;
+			}
+			map.put("res", res);
+			map.put("exception", exception);
+			return map;
+		}
 }
