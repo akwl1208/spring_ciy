@@ -16,7 +16,10 @@
 	<!-- 프로젝트 내 폴더인 경우 webapp폴더 기준으로 탐색 -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<!-- file:/// => 프로젝트 외부 폴더 -->
-	<resources mapping="/file/**" location="file:///D:/git/uploadfiles/" />	
+	<!-- 첨부파일 -->
+	<resources mapping="/file/**" location="file:///D:/git/uploadfiles/" />
+	<!-- 썸머노트 이미지 -->
+	<resources mapping="/simg/**" location="file:///D:/git/img/" />
 	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
