@@ -1,14 +1,20 @@
 package kr.green.spring.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 import kr.green.spring.dao.MemberDAO;
 import kr.green.spring.vo.MemberVO;
@@ -69,6 +75,9 @@ public class MemberServiceImp implements MemberService{
 		//가입된 아이디가 아니면
 		if(dbMember == null)
 			return null;
+		
+		//자동로그인
+		dbMember.setAutoLogin(member.isAutoLogin());
 		
 		//아이디, 비번이 일치하는 경우
 		//matches(암호화 안된 비번, 암호화된 비번)
@@ -175,6 +184,46 @@ public class MemberServiceImp implements MemberService{
 			user.setMe_pw(encPw);
 		}
 		memberDao.updateMember(user);
+	}
+
+	@Override
+	public void keepLogin(String me_id, String me_session_id, Date me_session_limit) {
+		if(me_id == null || me_session_id == null || me_session_limit == null)
+			return;
+		memberDao.updateMemberSession(me_id,me_session_id,me_session_limit);
+	}
+
+	@Override
+	public MemberVO autoLogin(String session_id) {
+		if(session_id == null)
+			return null;
+		return memberDao.selectMemberBySession(session_id);
+	}
+
+	@Override
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		if(request == null)
+			return;
+		HttpSession session = request.getSession();
+		
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		//로그인 안했는데 로그아웃 하면
+		if(user == null)
+			return;
+		//세션에서 제거
+		session.removeAttribute("user");
+		
+		if(response == null)
+			return;
+		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+		//자동로그인 체크 안함
+		if(loginCookie == null)
+			return;
+		//쿠키 초기화
+		loginCookie.setPath("/");
+		loginCookie.setMaxAge(0);
+		response.addCookie(loginCookie);
+		keepLogin(user.getMe_id(), null, null);
 	}
 
 }
