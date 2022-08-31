@@ -140,7 +140,7 @@ public class MemberServiceImp implements MemberService{
 		//임시 비밀번호 발급 - 랜덤으로 8자리. 영문, 숫자만 가능
 		String newPw = "";
 		int max = 8;
-		String pwChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		//String pwChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		for(int i = 0; i < max; i++) {
 			//int index = (int)(Math.random() * (pwChar.length()+1));
 			//newPw += pwChar.charAt(index);
@@ -224,6 +224,35 @@ public class MemberServiceImp implements MemberService{
 		loginCookie.setMaxAge(0);
 		response.addCookie(loginCookie);
 		keepLogin(user.getMe_id(), null, null);
+	}
+
+	@Override
+	public ArrayList<MemberVO> getMemberList(MemberVO user) {
+		if(user == null)
+			return null;
+		if(user.getMe_authority() < 8)
+			return null;
+		return memberDao.selectMemberList(user.getMe_authority());
+	}
+
+	@Override
+	public boolean updateAuthority(MemberVO member, MemberVO user) {
+		if(member == null || user == null)
+			return false;
+		//화면에서 권한을 수정하여 접근한 경우
+		if(member.getMe_authority() >= user.getMe_authority())
+			return false;
+		//화면에서 아이디를 수정하여 접근한 경우
+		MemberVO dbMember = memberDao.selectMember(member.getMe_id());
+		if(dbMember == null || dbMember.getMe_authority() >= user.getMe_authority())
+			return false;
+		//접근 권한이 없는 회원이 접근한 경우
+		if(user.getMe_authority() < 8)
+			return false;
+		
+		dbMember.setMe_authority(member.getMe_authority());
+		memberDao.updateMember(dbMember);
+		return true;
 	}
 
 }

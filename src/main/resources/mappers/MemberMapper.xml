@@ -53,4 +53,9 @@
 		select * from member
 			where me_session_id = #{session_id} and me_session_limit > now()
 	</select>
+	
+	<!-- 권한정보 주고 회원 정보 리스트 가져오기 -->
+	<select id="selectMemberList" resultType="kr.green.spring.vo.MemberVO">
+		<![CDATA[select * from member where me_authority <]]> #{me_authority}
+	</select>
 </mapper>

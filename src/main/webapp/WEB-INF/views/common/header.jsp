@@ -31,6 +31,12 @@
      			<li class="nav-item">
         		<a class="nav-link" href="<%=request.getContextPath()%>/board/list2">게시글(AJAX)</a>
       		</li>
+      		<c:if test="${user != null && user.me_authority >= 8}">
+	      		<li class="nav-item">
+	        		<a class="nav-link" href="<c:url value="/admin/user/list"></c:url>">회원등급관리</a>
+	      		</li>
+      		</c:if>
+      		
 	    	</ul>
 		</div>
    	<c:if test="${user != null}">
